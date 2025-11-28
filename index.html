@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ron.Coffee - A futuristic-style café in Larisa offering premium coffee in a clean and modern environment." />
+  <meta name="keywords" content="Ron.Coffee, Larisa, Coffee Shop"/>
+  <link rel="shortcut icon" href="logo.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="logo.png">
+  <title>Ron.Coffee</title>
+  <style>
+    /* GENERAL STYLE */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #ffffff, #e6e6e6);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 30;
+    }
+
+    header img { height: 60px; border-radius: 12px; }
+    .nav-desktop a { margin-left: 30px; text-decoration: none; font-weight: 600; color: #333; transition: 0.3s; }
+    .nav-desktop a:hover { color: #777; }
+
+    .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 40px; }
+    .hero h1 { font-size: 65px; font-weight: 700; background: linear-gradient(90deg, #4f4f4f, #8e8e8e); -webkit-background-clip: text; color: transparent; letter-spacing: 3px; }
+    .hero p { max-width: 600px; font-size: 18px; margin-top: -10px; color: #555; }
+    .hero button { margin-top: 30px; padding: 14px 30px; border: none; font-size: 18px; border-radius: 30px; background: #333; color: white; cursor: pointer; transition: 0.3s; }
+    .hero button:hover { background: #555; }
+
+    .products { padding: 60px 50px; text-align: center; }
+    .products h2 { font-size: 40px; margin-bottom: 40px; color: #444; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+    .item { background: #f5f5f5; padding: 20px; border-radius: 18px; box-shadow: 0px 4px 20px rgba(0,0,0,0.05); transition: 0.3s; }
+    .item:hover { transform: translateY(-5px); }
+    .item img { width: 100%; border-radius: 15px; height: 180px; object-fit: cover; }
+    .item h3 { margin-top: 15px; font-size: 22px; }
+
+    footer { text-align: center; padding: 40px 20px; color: #666; margin-top: 50px; }
+
+    /* SIDE MENU / MOBILE */
+    #menuBtn { display: none; cursor: pointer; }
+    #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.25s ease, visibility 0.25s ease; z-index: 40; }
+    #overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    #sideMenu { position: fixed; top: 0; right: 0; width: 320px; height: 100vh; transform: translateX(100%); background: linear-gradient(180deg, #ffffff, #f2f2f2); box-shadow: -20px 0 60px rgba(0,0,0,0.08); border-radius: 12px 0 0 12px; padding: 28px; transition: transform 0.35s cubic-bezier(.2,.9,.3,1); z-index: 50; display: flex; flex-direction: column; gap: 20px; }
+    #sideMenu.open { transform: translateX(0); }
+    #sideMenu #closeBtn { align-self: flex-end; background: none; border: none; font-size: 22px; cursor: pointer; }
+    .side-nav a { display: block; padding: 12px 6px; text-decoration: none; color: #333; font-weight: 600; border-radius: 8px; transition: background 0.18s; }
+    .side-nav a:hover { background: rgba(0,0,0,0.04); }
+
+    @media (max-width: 900px) { header { padding: 18px 22px; } .nav-desktop { display: none; } #menuBtn { display: inline-flex; } }
+    @media (max-width: 420px) { #sideMenu { width: 85%; } }
+
+    /* LOCATION & CONTACT */
+    #location { padding: 60px 50px; display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; }
+    .map-wrapper { flex: 1 1 400px; min-width: 300px; height: 350px; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .contact-box { flex: 1 1 300px; min-width: 280px; background: #f5f5f5; padding: 30px; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .contact-box h3 { margin-top: 0; font-size: 28px; }
+    .contact-sub { font-size: 16px; color: #666; margin-bottom: 20px; }
+    .contact-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .info-item strong { display: block; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.jpg" alt="Ron.Coffee Logo" />
+    <button id="menuBtn" aria-label="Open menu" style="display:none; background:none; border:none; font-size:28px;">☰</button>
+    <nav class="nav-desktop">
+      <a href="#hero">Home</a>
+      <a href="#products">Gallery</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div id="overlay"></div>
+    <aside id="sideMenu" aria-hidden="true">
+      <button id="closeBtn" aria-label="Close menu">✕</button>
+      <nav class="side-nav">
+        <a href="#hero">Home</a>
+        <a href="#products">Gallery</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </aside>
+  </header>
+
+  <section class="hero" id="hero">
+    <h1>RON.COFFEE</h1>
+    <p>Premium coffee experience in the heart of Larisa. Futuristic vibes, clean design, and unforgettable taste.</p>
+    <button onclick="scrollToMenu()">VISIT US NOW</button>
+  </section>
+
+  <section id="about" style="padding:60px 50px; text-align:center;">
+    <h2 style="font-size:40px; color:#444;">About Us</h2>
+    <p style="max-width:700px; margin:20px auto; color:#555; font-size:18px;">
+      Ron.Coffee is a futuristic-style café located in the heart of Larisa. We blend clean aesthetics with premium-quality coffee. Our goal is simple: deliver an unforgettable coffee experience with a modern touch.
+    </p>
+  </section>
+
+  <section class="products" id="products">
+    <h2>Gallery</h2>
+    <div class="grid">
+      <div class="item"><img src="https://lh3.googleusercontent.com/p/AF1QipN2F7zweWi-N89Q0lDnc0urZtgXdcQHA0h0kgwF=s1360-w1360-h1020-rw" /></div>
+      <div class="item"><img src="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSziFx01k96pceCTocjXeUtZoRNBlYMjtQLVGiehf41B9hoX-0Zg5Tw-D0BTUYA4r7XvgeAVEW5DJDynzVGBXQvVp8TDTmGqbHxBR7J_kgGljKKJ1zGGINB38KelJ7BCM08stwpg=s1360-w1360-h1020-rw" /></div>
+      <div class="item"><img src="https://scontent.cdninstagram.com/v/t51.82787-15/587277749_17990821031906375_5276488985923497229_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ig_cache_key=Mzc3MzYxNDM3MDYxMDQxMjk3Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=NPhJjh0nlxQQ7kNvwEqVWSD&_nc_oc=AdndrZY5Ti6kAMnSliTWa-7VZTGvE_ch6_fA81aoICi_317IkMj7sld1OXQz8PpzW-0dZpMXCgH1F85XxPjYmE2F&_nc_ad=z-m&_nc_cid=1033&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=UKTPdKBDzmbWBOdNvskAqA&oh=00_Afh22jw425nuv8_7FcL-HpqDhRIbaFcWlBRERmtfIxYTFA&oe=692FA55C" /></div>
+      <div class="item"><img src="https://scontent.cdninstagram.com/v/t51.82787-15/571981747_17988010721906375_4470100093285122660_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ig_cache_key=Mzc1NDA1NjkyNzU0NzA5ODM2NQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=bl2baVb7D-0Q7kNvwFKhaXN&_nc_oc=AdkGREPCzjWQJOW4DAsj2GcfThaX73z8ufzl5EPJUzygBckxC39y9WUydpEM6IlLW-oXrQGrAp26kGzY9cjluI7T&_nc_ad=z-m&_nc_cid=1033&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=UKTPdKBDzmbWBOdNvskAqA&oh=00_Afj4Pl7FCrhdXhAdQ_tUWlPGaUyyq4Wdh8zR2EAQG_7aBw&oe=692FB2B0" /></div>
+    </div>
+  </section>
+
+  <!-- LOCATION & CONTACT -->
+  <section id="location">
+    <div class="map-wrapper">
+      <iframe src="https://www.google.com/maps/embed/v1/place?q=Ron.Coffee&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="contact-box">
+      <h3>Ron.Coffee</h3>
+      <p class="contact-sub">Modern • Futuristic • Specialty Coffee</p>
+      <div class="contact-info-grid">
+        <div class="info-item"><strong>Address:</strong> Κενταύρων 48, Λάρισα 412 22</div>
+        <div class="info-item"><strong>Phone:</strong> 241 181 1392</div>
+        <div class="info-item"><strong>Opening Hours:</strong> Mon–Sat: 07:30 – 22:30<br>Tue: 24h<br>Sun: 08:30 – 22:30</div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <p>© 2025 Ron.Coffee • <a style="text-decoration: none;font-size:medium;color: #333;" href="https://skancorp.com">Created by SKANCORP</a></p>
+  </footer>
+
+  <script>
+    function scrollToMenu() { document.getElementById("location").scrollIntoView({ behavior: "smooth" }); closeSideMenu(); }
+
+    (function(){
+      const menuBtn = document.getElementById('menuBtn');
+      const sideMenu = document.getElementById('sideMenu');
+      const overlay = document.getElementById('overlay');
+      const closeBtn = document.getElementById('closeBtn');
+      const sideLinks = sideMenu ? sideMenu.querySelectorAll('a') : [];
+
+      function openSideMenu(){ sideMenu.classList.add('open'); overlay.classList.add('open'); overlay.style.display='block'; sideMenu.setAttribute('aria-hidden','false'); }
+      function closeSideMenu(){ sideMenu.classList.remove('open'); overlay.classList.remove('open'); setTimeout(()=> overlay.style.display='none', 300); sideMenu.setAttribute('aria-hidden','true'); }
+      window.closeSideMenu = closeSideMenu;
+      if(menuBtn){ menuBtn.addEventListener('click', openSideMenu); }
+      if(closeBtn){ closeBtn.addEventListener('click', closeSideMenu); }
+      if(overlay){ overlay.addEventListener('click', closeSideMenu); }
+      sideLinks.forEach(link=>{ link.addEventListener('click',()=>{ setTimeout(closeSideMenu,150); }); });
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSideMenu(); });
+    })();
+  </script>
+</body>
+</html>
